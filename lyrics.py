@@ -1,6 +1,10 @@
 import requests
 import json
 from nltk.corpus import brown
+import threading
+import time
+import random
+import linecache
 
 API_URL = "https://api-inference.huggingface.co/models/Shanav12/swift_lyrics_final"
 headers = {"Authorization": "Bearer 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"}
@@ -10,24 +14,19 @@ invalid_characters = '.#$%&()-*+,/:;<=>?@[\\]^_`{|}~0123456789'
 brown_corpus = set(brown.words())
 
 
-# Private function to validate the generated quote
 def valid(text):
-  # If the text is empty, return False
   if len(text) == 0:
     return False
 
   # Split the text into individual words
   words = text.split(' ')
 
-  # Iterate through each word
   for index in range(0, len(words)):
     word = words[index]
 
-    # Replace each invalid character with a space
     for char in invalid_characters:
       word = word.replace(char, ' ')
 
-    # Remove leading/trailing spaces and split the resulting string in case the removal of invalid characters led to multiple words
     word = word.strip()
     new_words = word.split(' ')
 
@@ -42,12 +41,9 @@ def valid(text):
   words = [word for word in words if word != '']
   
   for word in words:
-    # If the word is not in the corpus or it contains an apostrophe in the last three characters in the word
-    if (word not in brown_corpus
-        and word[-1] != 's') or (word.find('\'') != -1
-                                 and word.find('\'') < len(word) - 3):
+    if word not in brown_corpus:
       return False
-
+    
   return True
 
 
@@ -78,13 +74,13 @@ def prompt_lyric(prompt, count = 0):
     # Make POST request to HuggingFace API
     response = requests.request("POST", API_URL, headers=headers, data=data)
     content = json.loads(response.content.decode('utf-8'))
-    # If response is empty or contains an error, raise an exception to retry quote generation
+    # If response is empty or contains an error, raise an exception to retry lyric generation
     if len(content) <= 0 or 'error' in content[0]:
       raise Exception
-    # Extract generated quote text from response
-    quote = content[0]['generated_text'].replace('\n', '')
-    if valid(quote):
-      return quote
+
+    lyric = content[0]['generated_text'].replace('\n', '')
+    if valid(lyric):
+      return lyric
     
     if count >= 10:
       raise Exception
@@ -92,6 +88,90 @@ def prompt_lyric(prompt, count = 0):
     return prompt_lyric(prompt, count + 1)
 
   except Exception:
-    # Retry generating quote in case of exceptions, up to 10 retries
+    # Retry generating lyric in case of exceptions, up to 10 retries
     if count < 10:
+
+      # Waiting 2 seconds before making another API call to avoid rate limits
+      time.sleep(2)
       return prompt_lyric(prompt, count + 1)
+    
+
+# Private function to generate random lyric using a random lyric starter
+def random_lyric():
+  number = random.randint(1, 951)
+  lyric = linecache.getline('lyric_starters.txt', number)
+  lyric = str(lyric).replace('\n', '')
+  return prompt_lyric(lyric)
+
+
+lyrics_lock = threading.Lock()
+lyrics = []  
+queue_size = 50  
+wait_time_seconds = 5  
+should_end = False  
+
+# Private function running in second thread to generate random lyrics and fill the lyric queue
+def generate_lyrics():
+  # Ensuring changes exist outside of this function
+  global should_end, lyric_thread, lyrics_lock, lyrics
+  end = False
+  temp_lyrics = []
+
+  while not end:
+    start_time = time.time()
+
+    # Attempt to fill up half the queue size with new lyrics
+    for i in range(0, round(queue_size / 2) - len(temp_lyrics)):
+      temp_lyrics.append(random_lyric())
+
+      # Break the loop if lyric generation took longer than the wait time
+      if time.time() - start_time > wait_time_seconds:
+        break
+
+    # If lyric generation was faster than the wait time, sleep for the remaining duration
+    if time.time() - start_time < wait_time_seconds:
+      time.sleep(wait_time_seconds - (time.time() - start_time))
+
+    with lyrics_lock:
+      end = should_end
+
+      for i in range(0, round(queue_size / 2) - len(lyrics)):
+        # Break the loop if there are no more new lyrics
+        if len(temp_lyrics) == 0:
+          break
+
+        # Add the new lyric to the queue and remove from the new lyrics list
+        lyrics.append(temp_lyrics[0])
+        temp_lyrics.pop(0)
+
+
+lyric_thread = threading.Thread(target=generate_lyrics)
+
+
+def get_random_lyric():
+  global should_end, lyric_thread, lyrics_lock, lyrics
+
+  with lyrics_lock:
+    if len(lyrics) > 0:
+      print("Queue Size: " + str(len(lyrics)))
+
+      # Return the first lyric from the queue and delete it
+      lyric = lyrics[0]
+      lyrics.pop(0)
+      return lyric
+    else:
+      return random_lyric()
+
+
+# Public function to start the lyric generation thread
+def start_lyric_generation():
+  global lyric_thread
+  lyric_thread.start()
+
+
+# Public function to stop the lyric generation thread
+def end_lyric_generation():
+  global lyric_thread, lyrics_lock, should_end
+  with lyrics_lock:
+    should_end = True
+  lyric_thread.join(timeout=5)
