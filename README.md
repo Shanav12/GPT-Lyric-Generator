@@ -1,9 +1,9 @@
-# TaylorSwiftLyricGenerator
-
-
 # Welcome To SwiftGen!
 
-SwiftGen is a website that allows users to randomly generate AI lyrics which follow in the style of Taylor Swift.
+
+# Overview:
+
+SwiftGen is a website that allows users to randomly generate AI lyrics which follow in the style of Taylor Swift. I believe that this is a great way to inspire youth to gain interest for the field!
 
 # Tech Stack:
 - Flask
@@ -12,7 +12,6 @@ SwiftGen is a website that allows users to randomly generate AI lyrics which fol
 - Bootstrap
 - Hugging Face
 - GPT-Neo
-
 
 
 # Project Summary:
