@@ -4,7 +4,8 @@
 
 SwiftGen is a website that allows users to randomly generate AI lyrics which follow in the style of Taylor Swift.
 
-**Tech Stack**
+
+**Tech Stack:**
 - Flask
 - HTML
 - CSS
@@ -13,7 +14,8 @@ SwiftGen is a website that allows users to randomly generate AI lyrics which fol
 - GPT-Neo
 
 
-**Project Summary**
+
+**Project Summary:**
 
 - Utilized GPT-2 embeddings and the GPT-Neo model from Hugging Face to implement a full-stack website using HTML, CSS, and Flask that outputs - lyric in the style of Taylor Swift
 - Preprocessed the dataset containing lyrics from her six best-selling albums by reformatting each sequence to contain 4 lines of lyrics and removed sequences with outlier lengths or overly repetitive tokens
