@@ -6,12 +6,9 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>Swift Gen</title>
-        <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script> 
-        <!-- Google fonts-->
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
         <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
-        <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{{url_for('static',filename='/css/styles.css')}}"  rel="stylesheet" />
     </head>
     <body id="page-top">
@@ -187,7 +184,7 @@
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-lg-5">
                         <h3 class="text-light">Click below to generate a random lyric!</h3>
-                        <form action="{{url_for('generate_text', _anchor=swift_gen)}}" method="post">
+                        <form action="{{url_for('generate_text')}}" method="post">
                             <p class="textColor">
                               <input type="submit" value="Submit" class="generate">
                             </p>
@@ -197,9 +194,9 @@
                     <div class="col-lg-5">
                       <h2 class="text-light">Lyric:</h2>
                       <ul id="generated_ul">
-                      <p class='text-light'>
+                      <li>
                         {{ generated }}
-                        </p>
+                      </li>
                       <!-- generated items will be here. -->
                       </ul>
                     </div>
@@ -214,7 +211,6 @@
           </script>
           {% endif %}
         </section>
-        <!-- Portfolio Modals-->
         <!-- Portfolio item 1 modal popup-->
         <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">

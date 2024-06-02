@@ -7,7 +7,7 @@ import random
 import linecache
 
 API_URL = "https://api-inference.huggingface.co/models/Shanav12/swift_lyrics_final"
-headers = {"Authorization": "Bearer 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"}
+headers = {"Authorization": "Bearer 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", "Content-Type": "application/json"}
 
 
 invalid_characters = '.#$%&()-*+,/:;<=>?@[\\]^_`{|}~0123456789'
@@ -72,7 +72,7 @@ def prompt_lyric(prompt, count = 0):
 
   try:
     # Make POST request to HuggingFace API
-    response = requests.request("POST", API_URL, headers=headers, data=data)
+    response = requests.post(API_URL, headers=headers, data=data)
     content = json.loads(response.content.decode('utf-8'))
     # If response is empty or contains an error, raise an exception to retry lyric generation
     if len(content) <= 0 or 'error' in content[0]:
@@ -91,8 +91,8 @@ def prompt_lyric(prompt, count = 0):
     # Retry generating lyric in case of exceptions, up to 10 retries
     if count < 10:
 
-      # Waiting 2 seconds before making another API call to avoid rate limits
-      time.sleep(2)
+      # Waiting 5 seconds before making another API call to avoid rate limits
+      time.sleep(5)
       return prompt_lyric(prompt, count + 1)
     
 
@@ -153,8 +153,6 @@ def get_random_lyric():
 
   with lyrics_lock:
     if len(lyrics) > 0:
-      print("Queue Size: " + str(len(lyrics)))
-
       # Return the first lyric from the queue and delete it
       lyric = lyrics[0]
       lyrics.pop(0)

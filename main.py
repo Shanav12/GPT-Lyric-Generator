@@ -12,7 +12,7 @@ else:
 
 @app.route(f'{base_url}')
 def home():
-  return render_template('index.html')
+  return render_template("index.html")
 
 
 @app.route('/generate_text', methods=["POST"])

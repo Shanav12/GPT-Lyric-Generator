@@ -91,6 +91,59 @@
   }
 }
 
+#generated_ul {
+  list-style-type: none; /* Remove list bullets */
+  padding: 0;
+  margin-top: 2em;
+}
+
+#generated_ul p {
+  font-size: 1.25em;
+  color: #f8f9fa; /* Lighten the text color */
+}
+
+#trythemodel {
+  padding: 4em 0;
+  background-color: #000c66;
+  color: white;
+}
+
+#trythemodel h2.section-heading {
+  font-size: 2.5em;
+  margin-bottom: 0.5em;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+#trythemodel h3 {
+  font-size: 1.75em;
+  margin-bottom: 1.5em;
+  color: #f8f9fa; /* Lighten the text color */
+}
+
+#trythemodel p.textColor {
+  margin: 1em 0;
+}
+
+.generate {
+  background-color: #af5baa; 
+  border: none; 
+  color: black; 
+  padding: 15px 32px; 
+  text-align: center; 
+  text-decoration: none; 
+  display: inline-block; 
+  font-size: 16px; 
+  margin: 4px 2px; /* Add some margin */
+  cursor: pointer; /* Add a pointer on hover */
+  border-radius: 12px; /* Rounded corners */
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.generate:hover {
+  background-color: #8c45a0; /* Darker green on hover */
+}
+
 body {
   margin: 0;
   font-family: var(--bs-body-font-family);
