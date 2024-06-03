@@ -5,9 +5,12 @@ import threading
 import time
 import random
 import linecache
+import os
+
 
 API_URL = "https://api-inference.huggingface.co/models/Shanav12/swift_lyrics_final"
-headers = {"Authorization": "Bearer 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", "Content-Type": "application/json"}
+API_KEY = os.environ['Bearer']
+headers = {"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"}
 
 
 invalid_characters = '.#$%&()-*+,/:;<=>?@[\\]^_`{|}~0123456789'
