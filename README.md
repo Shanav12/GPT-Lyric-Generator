@@ -1,6 +1,6 @@
 # Website hosted at: 
-[https://morning-meadow-85564-c8d5f713d93f.herokuapp.com/]((https://morning-meadow-85564-c8d5f713d93f.herokuapp.com/))
-
+[https://morning-meadow-85564-c8d5f713d93f.herokuapp.com/
+]([url](https://morning-meadow-85564-c8d5f713d93f.herokuapp.com/))
 # Overview:
 
 SwiftGen is a website that allows users to randomly generate AI lyrics which follow in the style of Taylor Swift. I believe that this is a great way to inspire youth to gain interest for the field!
