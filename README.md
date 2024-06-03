@@ -1,5 +1,3 @@
-# Welcome To SwiftGen!
-
 # Website hosted at: 
 [https://morning-meadow-85564-c8d5f713d93f.herokuapp.com/](url)
 
